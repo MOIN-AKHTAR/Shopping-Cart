@@ -30,7 +30,6 @@ class App extends Component {
     const OptionsList = this.props.Book.map(Item => (
       <option key={Item._id}>{Item._id}</option>
     ));
-
     return (
       <Container style={{ marginTop: "1rem" }}>
         <CustomNavbar />

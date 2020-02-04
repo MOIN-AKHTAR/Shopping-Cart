@@ -44,8 +44,9 @@ export const addToCartReducer = (State = DefaultValues, Action) => {
         total: totalItems(Cart)
       };
     }
-    default:
+    default: {
       return State;
+    }
   }
 };
 

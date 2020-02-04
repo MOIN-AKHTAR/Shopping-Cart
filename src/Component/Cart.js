@@ -34,6 +34,7 @@ function Cart(props) {
       props.UpdateToCart(_id, -1);
     }
   };
+
   // INITIAL RENDERING
   if (props.Cart.length === 0) {
     return <div></div>;

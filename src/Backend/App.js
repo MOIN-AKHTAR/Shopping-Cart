@@ -1,6 +1,7 @@
 const Express = require("express");
 const Mongoose = require("mongoose");
 const BookModel = require("./Models/Book");
+const CartModel = require("./Models/Cart");
 const AppError = require("./Utils/AppError");
 const Asyncwrapper = require("./Utils/AsyncWrapper");
 const ErrorMiddleWare = require("./Utils/ErrorMiddleWare.js");
@@ -24,7 +25,7 @@ const App = Express();
 
 // Making Connection
 Mongoose.connect(
-  process.env.DB,
+  "mongodb://127.0.0.1:27017/BooksShopingCart",
   {
     useCreateIndex: true,
     useNewUrlParser: true,
@@ -98,6 +99,66 @@ App.delete(
   })
 );
 
+App.post(
+  "/cart",
+  Asyncwrapper(async (req, res, next) => {
+    const Cart = new CartModel(req.body);
+    await Cart.save();
+    if (!Cart) {
+      return next(new AppError("Server Is Not Responding", 500));
+    }
+    res.status(201).json({
+      Status: "Success",
+      Cart
+    });
+  })
+);
+
+App.delete(
+  "/cart/:Id",
+  Asyncwrapper(async (req, res, next) => {
+    const DeletedCart = await CartModel.findByIdAndDelete(req.params.Id);
+    if (!DeletedCart) {
+      return next(new AppError("Not Found :(", 404));
+    }
+    res.status(201).json({
+      Status: "Success",
+      DeletedCart
+    });
+  })
+);
+
+App.get(
+  "/cart",
+  Asyncwrapper(async (req, res, next) => {
+    const Carts = await CartModel.find({});
+    res.status(200).send({
+      Status: "Success",
+      Carts
+    });
+  })
+);
+
+App.patch(
+  "/cart/:Id",
+  Asyncwrapper(async (req, res, next) => {
+    const Update = await CartModel.findById(req.params.Id);
+    Update.quantity = Update.quantity + req.body.quantity;
+    const UpdatedCart = await CartModel.findByIdAndUpdate(
+      req.params.Id,
+      { quantity: Update.quantity },
+      { new: true, runValidators: true }
+    );
+    if (!UpdatedCart) {
+      return next(new AppError("Not Found :(", 404));
+    }
+    res.status(201).json({
+      Status: "Success",
+      UpdatedCart
+    });
+  })
+);
+
 App.all("*", (req, res, next) => {
   return next(new AppError(`Can Not Find ${req.originalUrl} From Server`, 404));
 });
@@ -106,8 +167,8 @@ App.all("*", (req, res, next) => {
 App.use(ErrorMiddleWare);
 
 // Listening At PORT
-const Server = App.listen(process.env.PORT, () => {
-  console.log("Server Is Running On Port ", process.env.PORT);
+const Server = App.listen(5000, () => {
+  console.log("Server Is Running On Port ", 5000);
 });
 
 // Handling Unhandled Rejections
