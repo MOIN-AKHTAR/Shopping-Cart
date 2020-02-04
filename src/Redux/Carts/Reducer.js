@@ -1,4 +1,4 @@
-import { ADD_TO_CART, DELETE_CART, UPDATE_CART } from "./Type";
+import { ADD_TO_CART, DELETE_CART, UPDATE_CART, GET_CART } from "./Type";
 const DefaultValues = {
   Cart: [],
   totalAmount: 0
@@ -43,6 +43,15 @@ export const addToCartReducer = (State = DefaultValues, Action) => {
         totalAmount: total(Cart).amount,
         total: totalItems(Cart)
       };
+    }
+    case GET_CART:
+      {
+      const Cart = [...Action.Payload]
+      return{
+        Cart,
+        totalAmount: total(Cart).amount,
+        total: totalItems(Cart)
+      }
     }
     default: {
       return State;

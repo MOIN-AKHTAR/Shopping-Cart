@@ -1,4 +1,4 @@
-import { ADD_TO_CART, DELETE_CART, UPDATE_CART } from "./Type";
+import { ADD_TO_CART, DELETE_CART, UPDATE_CART, GET_CART } from "./Type";
 import axios from "axios";
 
 export const Add_To_Cart = Item => {
@@ -49,6 +49,23 @@ export const Update_To_Cart = (id, unit) => {
           type: UPDATE_CART,
           id,
           unit
+        });
+      })
+      .catch(err => console.log(err.message));
+  };
+};
+
+export const Get_Cart = () => {
+  return dispatch => {
+    axios({
+      method: "GET",
+      url: "http://localhost:5000/cart"
+    })
+      .then(res => {
+        const Cart = res.data.Carts;
+        dispatch({
+          type: GET_CART,
+          Payload: Cart
         });
       })
       .catch(err => console.log(err.message));
