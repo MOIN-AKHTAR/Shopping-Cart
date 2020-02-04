@@ -4,6 +4,7 @@ const BookRoute = require("./Routes/BookRoute");
 const CartRoute = require("./Routes/CartRoute");
 const AppError = require("./Utils/AppError");
 const ErrorMiddleWare = require("./Utils/ErrorMiddleWare.js");
+
 // Resolving CORS Error
 App.use((req, res, next) => {
   // Website you wish to allow to connect
@@ -24,7 +25,7 @@ App.use((req, res, next) => {
   next();
 });
 
-// It Will Allow us To Read req.body
+// It Will Allow Express To Read JSON Data
 App.use(Express.json());
 
 // Routes
@@ -40,8 +41,8 @@ App.all("*", (req, res, next) => {
 App.use(ErrorMiddleWare);
 
 // Listening At PORT
-const Server = App.listen(5000, () => {
-  console.log("Server Is Running On Port ", 5000);
+const Server = App.listen(process.env.PORT, () => {
+  console.log("Server Is Running On Port ", process.env.PORT);
 });
 
 // Handling Unhandled Rejections
