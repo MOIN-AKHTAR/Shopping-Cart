@@ -25,7 +25,7 @@ const App = Express();
 
 // Making Connection
 Mongoose.connect(
-  "mongodb://127.0.0.1:27017/BooksShopingCart",
+  process.env.DB,
   {
     useCreateIndex: true,
     useNewUrlParser: true,
@@ -167,8 +167,8 @@ App.all("*", (req, res, next) => {
 App.use(ErrorMiddleWare);
 
 // Listening At PORT
-const Server = App.listen(5000, () => {
-  console.log("Server Is Running On Port ", 5000);
+const Server = App.listen(process.env.PORT, () => {
+  console.log("Server Is Running On Port ", process.env.PORT);
 });
 
 // Handling Unhandled Rejections
