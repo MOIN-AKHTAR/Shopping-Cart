@@ -35,11 +35,11 @@ export const Delete_Cart = Id => {
   };
 };
 
-export const Update_To_Cart = (id, unit) => {
+export const Update_To_Cart = (Id, unit) => {
   return dispatch => {
     axios({
       method: "PATCH",
-      url: `http://localhost:5000/cart/${id}`,
+      url: `http://localhost:5000/cart/${Id}`,
       data: {
         quantity: unit
       }
@@ -47,7 +47,7 @@ export const Update_To_Cart = (id, unit) => {
       .then(res => {
         dispatch({
           type: UPDATE_CART,
-          id,
+          Id,
           unit
         });
       })

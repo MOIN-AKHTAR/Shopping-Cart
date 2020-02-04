@@ -28,7 +28,7 @@ export const addToCartReducer = (State = DefaultValues, Action) => {
     }
     case UPDATE_CART: {
       const NewArr = [...State.Cart];
-      const Index = NewArr.findIndex(Item => Item._id === Action.id);
+      const Index = NewArr.findIndex(Item => Item._id === Action.Id);
       const UpdatedObj = {
         ...NewArr[Index],
         quantity: NewArr[Index].quantity + Action.unit
@@ -44,14 +44,13 @@ export const addToCartReducer = (State = DefaultValues, Action) => {
         total: totalItems(Cart)
       };
     }
-    case GET_CART:
-      {
-      const Cart = [...Action.Payload]
-      return{
+    case GET_CART: {
+      const Cart = [...Action.Payload];
+      return {
         Cart,
         totalAmount: total(Cart).amount,
         total: totalItems(Cart)
-      }
+      };
     }
     default: {
       return State;
